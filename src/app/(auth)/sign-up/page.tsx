@@ -11,15 +11,36 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { AuthCredentialsValidator, TAuthCredentialsValidator } from '@/lib/validators/account-credentials-validator'
 import { trpc } from '@/trpc/client'
+import { toast } from 'sonner'
+import { ZodError } from 'zod'
+import { useRouter } from 'next/navigation'
 
 const Page = () => {
-
+    const router = useRouter()
 
     const { register, handleSubmit, formState: { errors } } = useForm<TAuthCredentialsValidator>({
         resolver: zodResolver(AuthCredentialsValidator),
     })
 
-    const {mutate, isLoading} = trpc.auth.createPayloadUser.useMutation({})
+    const {mutate, isLoading} = trpc.auth.createPayloadUser.useMutation({
+        onError: (err) => {
+            if (err.data?.code === 'CONFLICT') {
+                toast.error('This email is already in use. Sign in instead?')
+                return
+            }
+
+            if (err instanceof ZodError) {
+                toast.error(err.issues[0].message)
+                return
+            }
+
+        toast.error('Something went wrong. Please try again later.')
+        },
+        onSuccess: ({sendToEmail}) => {
+            toast.success(`Verifiication email sent to ${sendToEmail}.`)
+            router.push('/verify-email?to=' + sendToEmail)
+        }
+    })
 
     const onSubmit = ({email, password}:TAuthCredentialsValidator) => {
         mutate({email, password})
