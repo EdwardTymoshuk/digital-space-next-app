@@ -22,7 +22,7 @@ const Page = () => {
         resolver: zodResolver(AuthCredentialsValidator),
     })
 
-    const {mutate, isLoading} = trpc.auth.createPayloadUser.useMutation({
+    const { mutate, isLoading } = trpc.auth.createPayloadUser.useMutation({
         onError: (err) => {
             if (err.data?.code === 'CONFLICT') {
                 toast.error('This email is already in use. Sign in instead?')
@@ -34,16 +34,16 @@ const Page = () => {
                 return
             }
 
-        toast.error('Something went wrong. Please try again later.')
+            toast.error('Something went wrong. Please try again later.')
         },
-        onSuccess: ({sendToEmail}) => {
+        onSuccess: ({ sendToEmail }) => {
             toast.success(`Verifiication email sent to ${sendToEmail}.`)
             router.push('/verify-email?to=' + sendToEmail)
         }
     })
 
-    const onSubmit = ({email, password}:TAuthCredentialsValidator) => {
-        mutate({email, password})
+    const onSubmit = ({ email, password }: TAuthCredentialsValidator) => {
+        mutate({ email, password })
     }
 
     return (
@@ -62,7 +62,7 @@ const Page = () => {
                                 className: 'text-muted-foreground text-yellow-600 gap-1.5',
                             })}
 
-                            href='/sing-in'>
+                            href='/sign-in'>
                             Already have an account? Sign in
                             <GoArrowRight />
                         </Link>
@@ -78,7 +78,9 @@ const Page = () => {
                                             'focus-visible:ring-red-500': errors.email
 
                                         })}
-                                        placeholder='you@example.com' />
+                                        placeholder='you@example.com'
+                                    />
+                                    {errors?.email && <p className='text-sm text-red-500 pt-2'>{errors.email.message}</p>}
                                 </div>
                                 <div className='grip gap-1 py-2'>
                                     <Label htmlFor='password'>Password</Label>
@@ -91,6 +93,7 @@ const Page = () => {
                                         })}
                                         placeholder='Password'
                                     />
+                                    {errors?.password && <p className='text-sm text-red-500 pt-2'>{errors.password.message}</p>}
                                 </div>
                                 <Button>Sing up</Button>
                             </div>
