@@ -1,4 +1,5 @@
 import MaxWidthWrapper from '@/components/MaxWidthWrapper'
+import ProductReel from '@/components/ProductReel'
 import { Button, buttonVariants } from '@/components/ui/button'
 import Link from 'next/link'
 import { LuArrowDownToLine, LuBadgeCheck, LuLeaf } from "react-icons/lu";
@@ -39,7 +40,7 @@ export default function Home() {
           </div>
         </div>
 
-        {/* TO DO: product list */}
+       <ProductReel query={{sort: 'desc', limit: 4}} href='/products' title='Brand new'/>
 
       </MaxWidthWrapper>
       <section className='border-t border-zinc-200 bg-zinc-50'>
