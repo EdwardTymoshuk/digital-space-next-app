@@ -24,8 +24,6 @@ const ProductReel = (props: ProductReelProps) => {
 		getNextPageParam: (lastPage) => lastPage.nextPage,
 	})
 
-	console.log(queryResults)
-
 	const products = queryResults?.pages.flatMap((page) => page.items)
 
 	let map: (Product | null)[] = []
@@ -35,7 +33,6 @@ const ProductReel = (props: ProductReelProps) => {
 		map = new Array<null>(query.limit ?? FALLBACK_LIMIT).fill(null)
 	}
 
-	console.log(products, map)
 	return (
 		<section className='py-12'>
 			<div className='md:flex md:itex-center md:justify-between mb-4'>

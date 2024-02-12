@@ -45,7 +45,7 @@ const VerifyEmail = ({ token }: VerifyEmailProps) => {
   if (isLoading) {
     return (
       <div className='flex flex-col items-center gap-2'>
-        <BiLoaderAlt className='animate-spin text-yellow-6 00 h-8 w-8' />
+        <BiLoaderAlt className='animate-spin text-yellow-600 h-8 w-8' />
         <h3 className='text-xl font-semibold'>Verifying...</h3>
         <p className='text-muted-foreground text-sm'>This won&apos;t take long.</p>
       </div>
